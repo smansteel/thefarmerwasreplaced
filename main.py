@@ -1,5 +1,5 @@
 import f0, f1
-import f2
+import f3
 from __builtins__ import *
 from f0 import goto_coord
 
@@ -79,30 +79,35 @@ nd = 4
 max_drone = 4
 sqrt_max = 2
 dronewsize = get_world_size()/(sqrt_max)
-quick_print(dronewsize)
+# quick_print(dronewsize)
 
 
-def init():
-	x_start, y_start = get_pos_x(), get_pos_y()
+# def init():
+# 	x_start, y_start = get_pos_x(), get_pos_y()
+#
+# 	for unlock_upgrade in next_unlocks:
+# 		cost = get_cost(unlock_upgrade)
+# 		for item in cost:
+# 			if (num_items(item) > cost[item]):
+# 				unlock(unlock_upgrade)
+# 				break
+# 			else:
+# 				farm_missing_or_farm_missing(map_items_entity[item],x_start, y_start, dronewsize)
+# active_drones = []
 
-	for unlock_upgrade in next_unlocks:
-		cost = get_cost(unlock_upgrade)
-		for item in cost:
-			if (num_items(item) > cost[item]):
-				unlock(unlock_upgrade)
-				break
-			else:
-				farm_missing_or_farm_missing(map_items_entity[item],x_start, y_start, dronewsize)
-active_drones = []
+world_used = (0,0,get_world_size())
 while True:
-	quick_print(f0.get_z_pattern_list(0,0, sqrt_max))
-	for coords in f0.get_z_pattern_list(0,0, sqrt_max):
-		coords = (coords[0]*dronewsize, coords[1]*dronewsize)
-		print(coords, dronewsize)
-		f0.goto_coord(coords[0], coords[1])
-		created = spawn_drone(init)
-		active_drones.append(created)
-		if not created:
-			print("not spawned")
-	for drones in active_drones:
-		wait_for(drones)
+	f3.optimized_harvest(world_used, Entities.Sunflower, Entities.Grass)
+	f3.optimized_harvest(world_used, Entities.Grass, Entities.Sunflower)
+
+# quick_print(f0.get_z_pattern_list(0,0, sqrt_max))
+	# for coords in f0.get_z_pattern_list(0,0, sqrt_max):
+	# 	coords = (coords[0]*dronewsize, coords[1]*dronewsize)
+	# 	print(coords, dronewsize)
+	# 	f0.goto_coord(coords[0], coords[1])
+	# 	created = spawn_drone(init)
+	# 	active_drones.append(created)
+	# 	if not created:
+	# 		print("not spawned")
+	# for drones in active_drones:
+	# 	wait_for(drones)

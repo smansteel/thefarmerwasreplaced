@@ -17,6 +17,8 @@ def untill_if_till():
 def no_oob(coord):
 	return coord % get_world_size()
 
+def goto_coord_loc(lcoation):
+	return goto_coord(lcoation[0], lcoation[1])
 
 def goto_coord(x, y):
 	if(x >= get_world_size()):
@@ -65,7 +67,8 @@ def goto_coord(x, y):
 			for i in range(0, y-get_pos_y()):
 				move(North)
 
-
+def get_z_pattern_list_wu(world_used):
+	return get_z_pattern_list(world_used[0], world_used[1], world_used[2])
 
 def get_z_pattern_list(start_x, start_y, size):
 	list_pattern = []
@@ -87,6 +90,16 @@ def get_z_pattern_list(start_x, start_y, size):
 			# quick_print((i,j))
 			list_pattern.append((j, i))
 	return list_pattern
+def plant_safe_harvest(entity):
+	while(not can_harvest() and get_entity_type() != None):
+		do_a_flip()
+	plant_safe(entity)
+
+def plan_safe_location(entity, location):
+	goto_coord_loc(location)
+	plant_safe(entity)
+
+
 
 def plant_safe(entity):
 	harvest()
@@ -134,6 +147,12 @@ def plant_in_list(list, entity):
 		goto_coord(item[0], item[1])
 		plant_safe(entity)
 
+def plant_to_dir(max_x, direction,  entity):
+	while get_pos_x() < max_x-1:
+		plant_safe_harvest(entity)
+		move(direction)
+	plant_safe_harvest(entity)
+	move(direction)
 
 def plant_in_list_in_list_random(list, entity_list):
 	for item in list:
@@ -161,3 +180,53 @@ def check_resources_to_plant(to_plant):
 		if(num_items(item)< get_world_size()**2*get_cost(to_plant)[item]*1.3):
 			all_ok.append(item)
 	return all_ok
+
+def spawn_drone_with_args(function, args):
+	if(len(args) == 0):
+		def rt_func():
+			return function()
+	elif (len(args) == 1):
+		def rt_func():
+			return function(args[0])
+	elif(len(args) == 2):
+		def rt_func():
+			return function(args[0], args[1])
+	elif(len(args) == 3):
+		def rt_func():
+			return function(args[0], args[1], args[2])
+	elif(len(args) == 4):
+		def rt_func():
+			return function(args[0], args[1], args[2], args[3])
+	elif(len(args) == 5):
+		def rt_func():
+			return function(args[0], args[1], args[2], args[3], args[4])
+	elif(len(args) == 6):
+		def rt_func():
+			return function(args[0], args[1], args[2], args[3], args[4], args[5])
+	elif(len(args) == 7):
+		def rt_func():
+			return function(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+	elif(len(args) == 8):
+		def rt_func():
+			return function(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+	else:
+		print("Atrocité tellement atroce qu'elle fait exploser ton programme")
+		return
+	return spawn_drone(rt_func)
+
+
+def wait_for_any_drone():
+	while(num_drones() == max_drones()):
+		random()
+
+def wait_for_every_drone():
+	while(num_drones() == 1):
+		random()
+
+
+def get_grow_index():
+	grow_index = {}
+	myrange = [15, 14, 13, 12, 11, 10, 9, 8, 7]
+	for i in myrange:
+		grow_index[i] = []
+	return grow_index
