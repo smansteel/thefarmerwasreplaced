@@ -1,40 +1,17 @@
+import f0
 from __builtins__ import *
 
-directions = [
-	North,
-	South,
-	East,
-	West
-]
 
 def get_available_directions():
 	avdir = []
-	for direction in directions:
+	for direction in f0.directions:
 		if(can_move(direction)):
 			avdir.append(direction)
 	return avdir
 
-opp = {
-	North: South,
-	South: North,
-	East: West,
-	West: East
-}
-
-# class Choice():
-#     def __init__(self, coords,  avdirection):
-#         self.coords = coords
-#         self.avdirection = avdirection
-#
-#     def explore(self, direction):
-#         if(direction not in self.avdirection):
-#             return
-#         else:
-#             self.avdirection.remove(direction)
-
 def go_to_last_branch(moves_history, where_to_stop):
 	while((get_pos_x(), get_pos_y()) != where_to_stop):
-		move(opp[moves_history[where_to_stop].pop()])
+		move(f0.opp[moves_history[where_to_stop].pop()])
 
 	# for move_to_do in reversed(moves_history):
 	#     if((get_pos_x(), get_pos_y()) == where_to_stop):
@@ -63,7 +40,7 @@ def solve_maze():
 			last_move = None
 		elif len(avdir) == 2 and last_move != None:
 			if(last_move != None):
-				avdir.remove(opp[last_move])
+				avdir.remove(f0.opp[last_move])
 			if(len(choice_history) != 0 and moves_since_choice[choice_history[len(choice_history)-1]] != None):
 				# case start game
 				moves_since_choice[choice_history[len(choice_history)-1]].append(avdir[0])
@@ -71,7 +48,7 @@ def solve_maze():
 			move(avdir[0])
 		else:
 			if(last_move != None):
-				avdir.remove(opp[last_move])
+				avdir.remove(f0.opp[last_move])
 			if(get_pos_x(), get_pos_y()) in available_dir_at_choice:
 				# case nouvelle branche du choix deja existant
 				avdir = available_dir_at_choice[(get_pos_x(), get_pos_y())]

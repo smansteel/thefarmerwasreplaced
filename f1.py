@@ -1,6 +1,5 @@
 from __builtins__ import *
 import f0
-from f0 import untill_if_till, plant_in_list
 
 
 def check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size):
