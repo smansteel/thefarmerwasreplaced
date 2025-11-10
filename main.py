@@ -6,7 +6,8 @@ from f0 import goto_coord
 xsize = get_world_size()
 
 # reset
-clear()
+# clear()
+f0.goto_coord(0,0)
 quick_print("")
 quick_print("")
 quick_print("")
@@ -24,7 +25,8 @@ map_items_entity = {
 	Items.Carrot: Entities.Carrot,
 	Items.Pumpkin: Entities.Pumpkin,
 	Items.Hay: Entities.Grass,
-	Items.Wood: Entities.Bush
+	Items.Wood: Entities.Bush,
+    Items.Cactus: Entities.Cactus
 }
 
 def farm_missing_or_farm_missing(resource):
@@ -42,15 +44,14 @@ def farm_missing_or_farm_missing(resource):
 
 	if(resource == Entities.Pumpkin):
 		f1.check_on_pumpkins(zone_x, zone_y, size)
+	elif(resource == Entities.Cactus):
+		f1.check_on_cactus(zone_x, zone_y, 5)
 	else:
 		f0.plant_in_list(f0.get_z_pattern_list(zone_x, zone_y, size), resource)
 
 
 next_unlocks = [
-	Unlocks.Pumpkins,
-	Unlocks.Carrots,
-	Unlocks.Trees,
-	Unlocks.Cactus
+	Unlocks.Mazes
 
 ]
 

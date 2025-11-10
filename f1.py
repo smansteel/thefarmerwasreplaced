@@ -1,7 +1,6 @@
 from __builtins__ import *
 import f0
 def check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size):
-	rq_stop = False
 	plant_locations = f0.get_z_pattern_list(0, 0, pumpkin_size)
 	#plant
 
@@ -38,3 +37,43 @@ def check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size):
 
 	f0.goto_coord(pumpkin_zone_x, pumpkin_zone_x)
 	harvest()
+
+def check_on_cactus(zone_x, zone_y, size):
+    plant_locations = f0.get_z_pattern_list(0, 0, size)
+    # plant
+
+    for location in plant_locations:
+        f0.goto_coord(zone_x + location[0], zone_x + location[1])
+        harvest()
+        f0.till_if_not_till()
+        plant(Entities.Cactus)
+
+    # quick_print(uncked)
+    # check
+    to_come_back = []
+    req_stop = False
+    ok_cactus = []
+
+
+    while not req_stop:
+        no_issue = True
+
+        for location in plant_locations:
+            if(location not in ok_cactus):
+
+                f0.goto_coord(zone_x + location[0], zone_y + location[1])
+                # print(max(location[0], location[1]), measure())
+                if(max(location[0], location[1]) != measure()):
+                    harvest()
+                    plant(Entities.Cactus)
+                    no_issue = False
+
+                else:
+                    ok_cactus.append(location)
+                    quick_print("np")
+        if(no_issue):
+            req_stop = True
+            # quick_print("should be bigger :", measure(North), measure(East))
+
+    f0.goto_coord(zone_x, zone_x)
+    harvest()
