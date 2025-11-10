@@ -119,11 +119,11 @@ def get_cross_pattern_list(wu):
 
 
 
-def get_z_pattern_list(start_x, start_y, size):
+def get_z_pattern_list(start_x, start_y, size, every_lines=1):
 	list_pattern = []
 
 	# z style patern to opti
-	for i in range(start_y, start_y +size):
+	for i in range(start_y, start_y +size, every_lines):
 		# quick_print(i)
 		dir = i % 2
 		if (dir == 0):
@@ -140,7 +140,7 @@ def get_z_pattern_list(start_x, start_y, size):
 			list_pattern.append((j, i))
 	return list_pattern
 def plant_safe_harvest(entity):
-	while(not can_harvest() and get_entity_type() != None):
+	while(not can_harvest() and get_entity_type() not in (None, Entities.Dead_Pumpkin)):
 		do_a_flip()
 	plant_safe(entity)
 
@@ -148,15 +148,31 @@ def plan_safe_location(entity, location):
 	goto_coord_loc(location)
 	plant_safe(entity)
 
+def harvest_min_lvl_plant_safe(entity, min_lvl):
+	if(measure() != None and measure()>=min_lvl):
+		plant_safe(entity)
+
+
+def drone_start_row(func, args):
+	last_pos_x, last_pos_y = -1,-1
+	while get_pos_x() > last_pos_x or get_pos_y() > last_pos_y:
+		call_func_with_args_as_list(func, args)
+
+		last_pos_x, last_pos_y = get_pos_x(), get_pos_y()
+		move(East)
 
 
 def plant_safe(entity):
 	harvest()
+	while(get_water() < .3 and not num_items(Items.Water) ==0):
+		use_item(Items.Water)
+
 	if(entity == Entities.Grass):
 		untill_if_till()
 		# plant(entity)
 	elif(entity == Entities.Pumpkin):
-		quick_print("please use dedicated function")
+		till_if_not_till()
+		plant(entity)
 	elif(entity == Entities.Carrot):
 		till_if_not_till()
 		plant(entity)
@@ -176,15 +192,7 @@ def plant_safe(entity):
 		elif(get_pos_x()%2 == 1 and get_pos_y()%2 == 1):
 			plant(Entities.Tree)
 		else:
-			plant(entity)
-	elif(entity == Entities.Bush):
-		untill_if_till()
-		if(get_pos_x()%2 == 0 and get_pos_y()%2 == 0):
-			plant(Entities.Tree)
-		elif(get_pos_x()%2 == 1 and get_pos_y()%2 == 1):
-			plant(Entities.Tree)
-		else:
-			plant(entity)
+			plant(Entities.Bush)
 	else:
 		quick_print("seed cannot be planted, not implemented")
 
@@ -233,37 +241,32 @@ def check_resources_to_plant(to_plant):
 			all_ok.append(item)
 	return all_ok
 
-def spawn_drone_with_args(function, args):
-	if(len(args) == 0):
-		def rt_func():
-			return function()
+def call_func_with_args_as_list(function, args):
+	if (len(args) == 0):
+		function()
 	elif (len(args) == 1):
-		def rt_func():
-			return function(args[0])
-	elif(len(args) == 2):
-		def rt_func():
-			return function(args[0], args[1])
-	elif(len(args) == 3):
-		def rt_func():
-			return function(args[0], args[1], args[2])
-	elif(len(args) == 4):
-		def rt_func():
-			return function(args[0], args[1], args[2], args[3])
-	elif(len(args) == 5):
-		def rt_func():
-			return function(args[0], args[1], args[2], args[3], args[4])
-	elif(len(args) == 6):
-		def rt_func():
-			return function(args[0], args[1], args[2], args[3], args[4], args[5])
-	elif(len(args) == 7):
-		def rt_func():
-			return function(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
-	elif(len(args) == 8):
-		def rt_func():
-			return function(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+		function(args[0])
+	elif (len(args) == 2):
+		function(args[0], args[1])
+	elif (len(args) == 3):
+		function(args[0], args[1], args[2])
+	elif (len(args) == 4):
+		function(args[0], args[1], args[2], args[3])
+	elif (len(args) == 5):
+		function(args[0], args[1], args[2], args[3], args[4])
+	elif (len(args) == 6):
+		function(args[0], args[1], args[2], args[3], args[4], args[5])
+	elif (len(args) == 7):
+		function(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+	elif (len(args) == 8):
+		function(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 	else:
 		print("Atrocité tellement atroce qu'elle fait exploser ton programme")
 		return
+
+def spawn_drone_with_args(function, args):
+	def rt_func():
+		return call_func_with_args_as_list(function, args)
 	return spawn_drone(rt_func)
 
 

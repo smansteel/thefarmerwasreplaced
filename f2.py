@@ -12,21 +12,21 @@ def get_available_directions():
 def go_to_last_branch(moves_history, where_to_stop):
 	while((get_pos_x(), get_pos_y()) != where_to_stop):
 		if(len(moves_history[where_to_stop]) == 0):
-			print(where_to_stop, "vs ", get_pos_x(), get_pos_y())
 			return False
 		move(f0.opp[moves_history[where_to_stop].pop()])
 	moves_history[where_to_stop] = []
 	return True
 
-hist_max = 5
+hist_max = 3
 def solve_maze(tries = 0):
 	moves_since_choice = {}
 	available_dir_at_choice = {}
 	choice_history = []
 	last_move = None
 
-	quick_print(moves_since_choice, available_dir_at_choice, choice_history, last_move, tries)
-
+	if(tries >= hist_max):
+		harvest()
+		return
 
 	while(get_entity_type() != Entities.Treasure):
 		avdir = get_available_directions()
@@ -37,9 +37,8 @@ def solve_maze(tries = 0):
 			move(avdir[0])
 		elif(last_move != None and 1 == len(avdir)):
 			if(len(choice_history) != 0 and not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
-				quick_print("i shat myself")
+				print("i shat myself")
 				solve_maze(tries + 1)
-
 				return
 
 			last_move = None
@@ -76,7 +75,7 @@ def solve_maze(tries = 0):
 				last_move = go
 				move(go)
 		# elif
-	if(tries < hist_max):
+	if(tries < hist_max-2):
 		use_item(Items.Weird_Substance, get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1))
 		solve_maze(tries + 1)
 	else:

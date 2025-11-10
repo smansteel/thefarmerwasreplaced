@@ -29,12 +29,17 @@ def classic_plant(world_used, next_resource):
 def optimized_harvest(world_used, resource, next_resource):
 	f0.goto_coord(world_used[0], world_used[1])
 	if(resource == None or resource not in need_global_harvest):
+		quick_print("classic plant ", resource)
 		classic_plant(world_used, next_resource)
 		return
 	elif(resource == Entities.Sunflower):
 		f4.harvest_sunfower(world_used, next_resource)
 	elif(resource == Entities.Cactus):
 		f4.harvest_cactus(world_used)
+		classic_plant(world_used, next_resource)
+	elif(resource == Entities.Pumpkin):
+		quick_print("harvest_pumpkin ", resource)
+		f4.harvest_pumpkin(world_used)
 		classic_plant(world_used, next_resource)
 	elif(resource == Entities.Treasure):
 		f2.solve_maze()
