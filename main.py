@@ -38,6 +38,7 @@ dronewsize = get_world_size()/(sqrt_max)
 
 world_used = (0,0,get_world_size())
 while True:
-	f3.optimized_harvest(world_used, Entities.Bush, Entities.Treasure)
-	f3.optimized_harvest(world_used, Entities.Treasure, Entities.Bush)
+	f3.optimized_harvest(world_used, Entities.Bush, Entities.Cactus)
+	f3.optimized_harvest(world_used, Entities.Cactus, Entities.Pumpkin)
+	f3.optimized_harvest(world_used, Entities.Pumpkin, Entities.Bush)
 

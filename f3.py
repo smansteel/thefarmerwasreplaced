@@ -35,6 +35,7 @@ def optimized_harvest(world_used, resource, next_resource):
 		f4.harvest_sunfower(world_used, next_resource)
 	elif(resource == Entities.Cactus):
 		f4.harvest_cactus(world_used)
+		classic_plant(world_used, next_resource)
 	elif(resource == Entities.Treasure):
 		f2.solve_maze()
 		classic_plant(world_used, next_resource)

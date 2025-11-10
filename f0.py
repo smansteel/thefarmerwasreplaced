@@ -30,6 +30,7 @@ def untill_if_till():
 def no_oob(coord):
 	return coord % get_world_size()
 
+# 1, 18         0, 0, 22
 def is_oob(location, wu):
 	return location[0]< wu[0] or location[0]>= wu[0]+wu[2] or location[1]< wu[1] or location[1]>= wu[1]+wu[2]
 

@@ -30,13 +30,13 @@ def solve_maze(tries = 0):
 
 	while(get_entity_type() != Entities.Treasure):
 		avdir = get_available_directions()
-		if(get_pos_x(), get_pos_y()) in available_dir_at_choice and last_move != None and  f0.opp[last_move] in available_dir_at_choice[get_pos_x(), get_pos_y()]:
-			available_dir_at_choice[get_pos_x(), get_pos_y()].remove(f0.opp[last_move])
+		# if(get_pos_x(), get_pos_y()) in available_dir_at_choice and last_move != None and  f0.opp[last_move] in available_dir_at_choice[get_pos_x(), get_pos_y()]:
+		# 	available_dir_at_choice[get_pos_x(), get_pos_y()].remove(f0.opp[last_move])
 		if last_move == None and 1 == len(avdir):
 			last_move = avdir[0]
 			move(avdir[0])
 		elif(last_move != None and 1 == len(avdir)):
-			if(not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
+			if(len(choice_history) != 0 and not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
 				quick_print("i shat myself")
 				solve_maze(tries + 1)
 
@@ -60,7 +60,7 @@ def solve_maze(tries = 0):
 
 			if(len(avdir) == 0):
 				choice_history.remove(choice_history[len(choice_history) - 1])
-				if(not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
+				if(len(choice_history) != 0 and not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
 					print("i shat myself")
 					solve_maze(tries + 1)
 					return
