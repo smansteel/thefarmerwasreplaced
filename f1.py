@@ -42,47 +42,47 @@ def check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size):
 	harvest()
 
 def check_on_cactus(zone_x, zone_y, size):
-    plant_locations = f0.get_z_pattern_list(0, 0, size)
-    # plant
+	plant_locations = f0.get_z_pattern_list(0, 0, size)
+	# plant
 
-    for location in plant_locations:
-        f0.goto_coord(zone_x + location[0], zone_x + location[1])
-        harvest()
-        f0.till_if_not_till()
-        plant(Entities.Cactus)
+	for location in plant_locations:
+		f0.goto_coord(zone_x + location[0], zone_x + location[1])
+		harvest()
+		f0.till_if_not_till()
+		plant(Entities.Cactus)
 
-    # quick_print(uncked)
-    # check
-    to_come_back = []
-    req_stop = False
-    # ok_cactus = []
+	# quick_print(uncked)
+	# check
+	to_come_back = []
+	req_stop = False
+	# ok_cactus = []
 
-    count = 0
-    while not req_stop:
-        count +=1
-        # if(count > 5):
-        #     plant_locations
-        no_issue = True
+	count = 0
+	while not req_stop:
+		count +=1
+		# if(count > 5):
+		#     plant_locations
+		no_issue = True
 
-        for location in plant_locations:
-            # if(location not in ok_cactus):
+		for location in plant_locations:
+			# if(location not in ok_cactus):
 
-                f0.goto_coord(zone_x + location[0], zone_y + location[1])
-                if(measure(North) != None and measure() - measure(North) > 0 and size-1 != get_pos_y()):
-                    no_issue = False
-                    swap(North)
-                if (measure(East) != None and measure() - measure(East) > 0  and size-1 != get_pos_x()):
-                    no_issue = False
-                    swap(East)
-                if (measure(South) != None and measure() - measure(South) < 0  and 0 != get_pos_y()):
-                    no_issue = False
-                    swap(South)
-                if (measure(West) != None and measure() - measure(West) < 0  and 0 != get_pos_x()):
-                    no_issue = False
-                    swap(West)
+				f0.goto_coord(zone_x + location[0], zone_y + location[1])
+				if(measure(North) != None and measure() - measure(North) > 0 and size-1 != get_pos_y()):
+					no_issue = False
+					swap(North)
+				if (measure(East) != None and measure() - measure(East) > 0  and size-1 != get_pos_x()):
+					no_issue = False
+					swap(East)
+				if (measure(South) != None and measure() - measure(South) < 0  and 0 != get_pos_y()):
+					no_issue = False
+					swap(South)
+				if (measure(West) != None and measure() - measure(West) < 0  and 0 != get_pos_x()):
+					no_issue = False
+					swap(West)
 
-        if(no_issue):
-            req_stop = True
+		if(no_issue):
+			req_stop = True
 
-    f0.goto_coord(zone_x, zone_y)
-    harvest()
+	f0.goto_coord(zone_x, zone_y)
+	harvest()

@@ -61,11 +61,12 @@ next_unlocks = [
 ]
 
 # harvest()
-plant(Entities.Bush)
-substance = get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1)
-use_item(Items.Weird_Substance, substance)
+while True:
+    plant(Entities.Bush)
+    substance = get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1)
+    use_item(Items.Weird_Substance, substance)
 
-f2.solve_maze()
+    f2.solve_maze()
 
 #
 # while True:
