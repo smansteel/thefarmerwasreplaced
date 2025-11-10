@@ -79,7 +79,6 @@ def solve_maze():
 
 	while(get_entity_type() != Entities.Treasure):
 		avdir = get_available_directions()
-		quick_print(avdir)
 		if last_move == None and 1 == len(avdir):
 			last_move = avdir[0]
 			move(avdir[0])

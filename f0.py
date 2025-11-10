@@ -24,6 +24,8 @@ def goto_coord(x, y):
 	if(y >= get_world_size()):
 		quick_print("y will be reduced to ", y%get_world_size(), " bc it is out of bounds")
 
+
+
 	x=x%get_world_size()
 	y = y % get_world_size()
 
