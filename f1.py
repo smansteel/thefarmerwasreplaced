@@ -1,43 +1,40 @@
 from __builtins__ import *
 import f0
 def check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size):
-    rq_stop = False
+	rq_stop = False
+	plant_locations = f0.get_z_pattern_list(0, 0, pumpkin_size)
+	#plant
 
-    #plant
-    for i in range(0, pumpkin_size):
-        dir = i % 2
-        if (dir == 0):
-            start = 0
-            end = pumpkin_size
-            step = 1
-        else:
-            start = pumpkin_size - 1
-            end = -1
-            step = -1
-        for j in range(start, end, step):
-            f0.goto_coord(pumpkin_zone_x + j, pumpkin_zone_x + i)
-            f0.till_if_not_till()
-            plant(Entities.Pumpkin)
-    uncked = f0.get_z_pattern_list(0,0,pumpkin_size)
-    # quick_print(uncked)
-    # check
-    while(not rq_stop):
-        all_pumpkin_ok = True
+	for location in plant_locations:
+		f0.goto_coord(pumpkin_zone_x + location[0], pumpkin_zone_x + location[1])
+		harvest()
+		f0.till_if_not_till()
+		plant(Entities.Pumpkin)
 
 
-        for item in uncked:
+	# quick_print(uncked)
+	# check
+	to_come_back = []
 
-            f0.goto_coord(pumpkin_zone_x + item[0], pumpkin_zone_y + item[1])
-            if (get_entity_type() == Entities.Dead_Pumpkin or not can_harvest()):
-                all_pumpkin_ok = False
-                plant(Entities.Pumpkin)
-                use_item(Items.Fertilizer)
-            else:
-                quick_print(get_entity_type() == Entities.Dead_Pumpkin, can_harvest())
-                quick_print("removing ", item, "when being at ", get_pos_x(), get_pos_y())
-                uncked.remove(item)
-        if(all_pumpkin_ok):
-            rq_stop = True
-    f0.goto_coord(pumpkin_zone_x, pumpkin_zone_x)
-    harvest()
+	for location in plant_locations:
+		f0.goto_coord(pumpkin_zone_x + location[0], pumpkin_zone_y + location[1])
 
+		if (get_entity_type() != Entities.Pumpkin):
+			plant(Entities.Pumpkin)
+		while (get_entity_type() == Entities.Dead_Pumpkin or not can_harvest()):
+			plant(Entities.Pumpkin)
+			if (num_items(Items.Fertilizer) == 0):
+				to_come_back.append((pumpkin_zone_x + location[0], pumpkin_zone_y + location[1]))
+			else:
+				use_item(Items.Fertilizer)
+
+	while len(to_come_back) != 0 :
+		for item in to_come_back:
+			f0.goto_coord(item[0], item[1])
+			if (get_entity_type() != Entities.Pumpkin):
+				plant(Entities.Pumpkin)
+				use_item(Items.Fertilizer)
+				to_come_back.remove(item)
+
+	f0.goto_coord(pumpkin_zone_x, pumpkin_zone_x)
+	harvest()
