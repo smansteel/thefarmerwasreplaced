@@ -4,6 +4,12 @@ from __builtins__ import *
 def till_if_not_till():
     if get_ground_type() != Grounds.Soil:
         till()
+def force_till():
+    if get_ground_type() != Grounds.Soil:
+        till()
+    else:
+        till()
+        till()
 def untill_if_till():
     if get_ground_type() == Grounds.Soil:
         till()
@@ -22,7 +28,7 @@ def goto_coord(x, y):
     y = y % get_world_size()
 
     if(x < get_pos_x()):
-        if(x<get_world_size()/4 and get_pos_x() > get_world_size()/4):
+        if(x < (get_world_size()/4) and get_pos_x() > (3*get_world_size()/4)):
             # print("case 1")
             for i in range(0, get_world_size()-get_pos_x()+x):
                 move(East)
@@ -30,7 +36,7 @@ def goto_coord(x, y):
             for i in range(0, get_pos_x()-x):
                 move(West)
     else:
-        if(x>get_world_size()/4 and get_pos_x() < get_world_size()/4):
+        if(x > (3*get_world_size()/4) and get_pos_x() < (get_world_size()/4)):
             # print("case 3")
             for i in range(0, get_pos_x()+(get_world_size()-x)):
                 move(West)
@@ -41,7 +47,7 @@ def goto_coord(x, y):
 
 
     if(y < get_pos_y()):
-        if(y<get_world_size()/4 and get_pos_y() > get_world_size()/4):
+        if(y < get_world_size()/4 and get_pos_y() > 3*get_world_size()/4):
             # print("case 1")
             for i in range(0, get_world_size()-get_pos_y()+y):
                 move(North)
@@ -49,7 +55,7 @@ def goto_coord(x, y):
             for i in range(0, get_pos_y()-y):
                 move(South)
     else:
-        if(y>get_world_size()/4 and get_pos_y() < get_world_size()/4):
+        if(y > 3*get_world_size()/4 and get_pos_y() < get_world_size()/4):
             # print("case 3")
             for i in range(0, get_pos_y()+(get_world_size()-y)):
                 move(South)

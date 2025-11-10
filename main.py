@@ -7,6 +7,7 @@ xsize = get_world_size()
 
 # reset
 # clear()
+harvest()
 f0.goto_coord(0,0)
 quick_print("")
 quick_print("")
@@ -22,53 +23,60 @@ size = get_world_size()
 
 
 map_items_entity = {
-	Items.Carrot: Entities.Carrot,
-	Items.Pumpkin: Entities.Pumpkin,
-	Items.Hay: Entities.Grass,
-	Items.Wood: Entities.Bush,
+    Items.Carrot: Entities.Carrot,
+    Items.Pumpkin: Entities.Pumpkin,
+    Items.Hay: Entities.Grass,
+    Items.Wood: Entities.Bush,
     Items.Cactus: Entities.Cactus
 }
 
 def farm_missing_or_farm_missing(resource):
 
-	any_needed = False
-	for needed in f0.check_resources_to_plant(resource):
-		print("i need ", needed)
-		farm_missing_or_farm_missing(map_items_entity[needed])
-		any_needed = True
-	if(any_needed):
-		farm_missing_or_farm_missing(resource)
-		return
-	if(num_items(Items.Power) < 500 and resource != Entities.Sunflower):
-		farm_missing_or_farm_missing(Entities.Sunflower)
+    any_needed = False
+    for needed in f0.check_resources_to_plant(resource):
+        print("i need ", needed)
+        farm_missing_or_farm_missing(map_items_entity[needed])
+        any_needed = True
+    if(any_needed):
+        farm_missing_or_farm_missing(resource)
+        return
+    if(num_items(Items.Power) < 500 and resource != Entities.Sunflower):
+        farm_missing_or_farm_missing(Entities.Sunflower)
 
-	if(resource == Entities.Pumpkin):
-		f1.check_on_pumpkins(zone_x, zone_y, size)
-	elif(resource == Entities.Cactus):
-		f1.check_on_cactus(zone_x, zone_y, 5)
-	else:
-		f0.plant_in_list(f0.get_z_pattern_list(zone_x, zone_y, size), resource)
+    if(resource == Entities.Pumpkin):
+        f1.check_on_pumpkins(zone_x, zone_y, size)
+    elif(resource == Entities.Cactus):
+        f1.check_on_cactus(zone_x, zone_y, size)
+    else:
+        f0.plant_in_list(f0.get_z_pattern_list(zone_x, zone_y, size), resource)
 
 
 next_unlocks = [
-	Unlocks.Mazes
+    Unlocks.Mazes,
+    Unlocks.Trees,
+    Unlocks.Carrots,
+    Unlocks.Pumpkins,
+    Unlocks.Cactus
 
 ]
 
+# harvest()
+plant(Entities.Bush)
+substance = get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1)
+use_item(Items.Weird_Substance, substance)
 
-while True:
-	if(xsize != get_world_size()):
-		break
-	for unlock_upgrade in next_unlocks:
-		cost = get_cost(unlock_upgrade)
-		for item in cost:
-			if(num_items(item) > cost[item]):
-				unlock(unlock_upgrade)
-				break
-			else:
-				farm_missing_or_farm_missing(map_items_entity[item])
-	# 	print("cost", cost)
-	#     if(cost < )
-	# farm_missing_or_farm_missing(Entities.Pumpkin)
-    # print("new poly cycle")
-    # f2.polyculture((0,0), Entities.Bush)
+f2.solve_maze()
+
+#
+# while True:
+#     if(xsize != get_world_size()):
+#         break
+#
+#     for unlock_upgrade in next_unlocks:
+#         cost = get_cost(unlock_upgrade)
+#         for item in cost:
+#             if(num_items(item) > cost[item]):
+#                 unlock(unlock_upgrade)
+#                 break
+#             else:
+#                 farm_missing_or_farm_missing(map_items_entity[item])
