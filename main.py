@@ -18,11 +18,6 @@ def get_plant_type_for_coord(x, y):
 	return plant_map[x][y]
 
 
-
-
-
-
-
 def plant_prep(plant_to_plant):
 	if(plant_to_plant == Entities.Grass):
 		plant(Entities.Grass)
@@ -62,10 +57,11 @@ quick_print("")
 quick_print("--- New Run ----")
 
 pumpkin_zone_x, pumpkin_zone_y = 0,0
-pumpkin_size = 8
+pumpkin_size = 5
 
 
 # w
 while True:
 	f1.check_on_pumpkins(pumpkin_zone_x, pumpkin_zone_y, pumpkin_size)
+
 
