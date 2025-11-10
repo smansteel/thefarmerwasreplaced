@@ -11,32 +11,37 @@ def get_available_directions():
 
 def go_to_last_branch(moves_history, where_to_stop):
 	while((get_pos_x(), get_pos_y()) != where_to_stop):
+		if(len(moves_history[where_to_stop]) == 0):
+			print(where_to_stop, "vs ", get_pos_x(), get_pos_y())
+			return False
 		move(f0.opp[moves_history[where_to_stop].pop()])
+	moves_history[where_to_stop] = []
+	return True
 
-	# for move_to_do in reversed(moves_history):
-	#     if((get_pos_x(), get_pos_y()) == where_to_stop):
-	#         break
-	#     move(opp[move_to_do])
-
-
-def solve_maze():
-	choice_nb = 0
-	moves = []
+hist_max = 5
+def solve_maze(tries = 0):
 	moves_since_choice = {}
 	available_dir_at_choice = {}
-
 	choice_history = []
-
 	last_move = None
+
+	quick_print(moves_since_choice, available_dir_at_choice, choice_history, last_move, tries)
 
 
 	while(get_entity_type() != Entities.Treasure):
 		avdir = get_available_directions()
+		if(get_pos_x(), get_pos_y()) in available_dir_at_choice and last_move != None and  f0.opp[last_move] in available_dir_at_choice[get_pos_x(), get_pos_y()]:
+			available_dir_at_choice[get_pos_x(), get_pos_y()].remove(f0.opp[last_move])
 		if last_move == None and 1 == len(avdir):
 			last_move = avdir[0]
 			move(avdir[0])
 		elif(last_move != None and 1 == len(avdir)):
-			go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])
+			if(not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
+				quick_print("i shat myself")
+				solve_maze(tries + 1)
+
+				return
+
 			last_move = None
 		elif len(avdir) == 2 and last_move != None:
 			if(last_move != None):
@@ -55,7 +60,10 @@ def solve_maze():
 
 			if(len(avdir) == 0):
 				choice_history.remove(choice_history[len(choice_history) - 1])
-				go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])
+				if(not go_to_last_branch(moves_since_choice, choice_history[len(choice_history)-1])):
+					print("i shat myself")
+					solve_maze(tries + 1)
+					return
 				last_move = None
 			else:
 				go = avdir[0]
@@ -63,13 +71,16 @@ def solve_maze():
 				available_dir_at_choice[(get_pos_x(), get_pos_y())] = avdir
 
 				choice_history.append((get_pos_x(), get_pos_y()))
-				choice_nb += 1
 				moves_since_choice[(get_pos_x(), get_pos_y())]= []
 				moves_since_choice[(get_pos_x(), get_pos_y())].append(go)
 				last_move = go
 				move(go)
 		# elif
-	harvest()
+	if(tries < hist_max):
+		use_item(Items.Weird_Substance, get_world_size() * 2 ** (num_unlocked(Unlocks.Mazes) - 1))
+		solve_maze(tries + 1)
+	else:
+		harvest()
 
 
 

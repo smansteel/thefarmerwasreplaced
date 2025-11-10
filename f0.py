@@ -162,13 +162,13 @@ def plant_safe(entity):
 	elif(entity == Entities.Sunflower):
 		till_if_not_till()
 		plant(entity)
-	elif(entity == Entities.Tree):
+	elif(entity == Entities.Bush):
 		untill_if_till()
 		plant(entity)
 	elif(entity == Entities.Cactus):
 		till_if_not_till()
 		plant(entity)
-	elif(entity == Entities.Bush):
+	elif(entity == Entities.Tree):
 		untill_if_till()
 		if(get_pos_x()%2 == 0 and get_pos_y()%2 == 0):
 			plant(Entities.Tree)
@@ -271,7 +271,7 @@ def wait_for_any_drone():
 		random()
 
 def wait_for_every_drone():
-	while(num_drones() == 1):
+	while(num_drones() != 1):
 		random()
 
 

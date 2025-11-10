@@ -4,10 +4,11 @@ import f0, f2, f4
 need_global_harvest = [Entities.Pumpkin, Entities.Cactus, Entities.Treasure, Entities.Sunflower]
 
 def classic_plant(world_used, next_resource):
+	f0.goto_coord(world_used[0], world_used[1])
 	is_treasure = False
 	if(next_resource == Entities.Treasure):
 		is_treasure = True
-		next_resource = Entities.Grass
+		next_resource = Entities.Bush
 	ongoing_drones = {}
 
 	for row in range(0, world_used[2]):
@@ -18,20 +19,17 @@ def classic_plant(world_used, next_resource):
 		ongoing_drones[row] = (drone)
 		move(North)
 
-		f0.wait_for_every_drone()
 	if(is_treasure):
-		f0.goto_coord(world_used[0], world_used[1])
+		f0.wait_for_every_drone()
 		f0.plant_safe(Entities.Bush)
-		substance = world_used[2] * 2 ** (num_unlocked(Unlocks.Mazes) - 1)
-		use_item(Items.Weird_Substance, substance)
+		use_item(Items.Weird_Substance, world_used[2] * 2 ** (num_unlocked(Unlocks.Mazes) - 1))
 
 
 
 def optimized_harvest(world_used, resource, next_resource):
-	# f0.goto_coord(world_used[0], world_used[1])
+	f0.goto_coord(world_used[0], world_used[1])
 	if(resource == None or resource not in need_global_harvest):
 		classic_plant(world_used, next_resource)
-
 		return
 	elif(resource == Entities.Sunflower):
 		f4.harvest_sunfower(world_used, next_resource)
@@ -40,7 +38,3 @@ def optimized_harvest(world_used, resource, next_resource):
 	elif(resource == Entities.Treasure):
 		f2.solve_maze()
 		classic_plant(world_used, next_resource)
-
-
-
-
