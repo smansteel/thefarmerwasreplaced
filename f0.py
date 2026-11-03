@@ -1,4 +1,6 @@
 from __builtins__ import *
+from f2 import m_goto
+
 
 def m_plant_and_harvest(entity):
 	if entity in [Entities.Carrot, Entities.Bush, Entities.Grass]:
@@ -7,12 +9,12 @@ def m_plant_and_harvest(entity):
 			for j in range(0, get_world_size()):
 				if can_harvest():
 					harvest()
-					m_plant(entity)
+				m_plant(entity)
 				move(East)
 			move(North)
 
 	elif entity == Entities.Pumpkin:
-		return plantAndHarvestPumpkin()
+		plantAndHarvestPumpkin()
 
 def m_plant(entity):
 	if entity == Entities.Carrot:
@@ -21,6 +23,8 @@ def m_plant(entity):
 		plantBush()
 	elif entity == Entities.Grass:
 		plantGrass()
+	elif entity == Entities.Pumpkin:
+		plantPumpkin()
 	else:
 		print("not implemented")
 
@@ -28,6 +32,10 @@ def plantCarrot():
 	if get_ground_type() != Grounds.Soil:
 		till()
 	plant(Entities.Carrot)
+def plantPumpkin():
+	if get_ground_type() != Grounds.Soil:
+		till()
+	plant(Entities.Pumpkin)
 
 def plantBush():
 	if get_ground_type() == Grounds.Soil:
@@ -47,18 +55,25 @@ def plantAndHarvestPumpkin():
 		for j in range(0, get_world_size()):
 			if can_harvest():
 				harvest()
-				if get_ground_type() == Grounds.Soil:
-					till()
-				m_plant(Entities.Pumpkin)
+			if get_ground_type() == Grounds.Soil:
+				till()
+			m_plant(Entities.Pumpkin)
 			move(East)
 		move(North)
 	# control
 	for i in range(0, get_world_size()):
-		rowOk = False
-		while not rowOk:
-			if(not can_harvest()):
-				rowOk = False
-				plant(Entities.Pumpkin)
-			move(East)
+		whileCondition = True
+		while whileCondition:
+			shouldContinue = True
+			for j in range(0, get_world_size()):
+				if(get_entity_type() != Entities.Pumpkin or not can_harvest()):
+					shouldContinue = False
+					plant(Entities.Pumpkin)
+				move(East)
+			whileCondition = not shouldContinue
 		move(North)
+	m_goto(0,0)
 	harvest()
+
+
+

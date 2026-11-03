@@ -1,21 +1,22 @@
 from __builtins__ import *
+from f2 import m_toPlantForRes
+
 
 def myCost(entity, number=1):
-	if entity == Entities.Grass or entity == Entities.Bush:
+	if entity == Entities.Grass or entity == Entities.Bush or entity == None:
 		return True
 	elif entity == Entities.Carrot:
 		return num_items(Items.Hay) > number and num_items(Items.Wood) > number
+	elif entity == Entities.Pumpkin:
+		return num_items(Items.Carrot) > number
+	return True
 
 
 def m_getEntityFromGoal(objectives):
-	if objectives[0] > num_items(Items.Hay):
-		return Entities.Grass
-	elif objectives[1] > num_items(Items.Wood):
-		return Entities.Bush
-	elif objectives[2] > num_items(Items.Carrot):
-		return Entities.Carrot
-	else:
-		return Entities.Carrot
+	for objective_key in objectives:
+		if num_items(objective_key) < objectives[objective_key]:
+			return m_toPlantForRes(objective_key)
+	return Entities.Pumpkin
 
 
 
@@ -23,10 +24,19 @@ def m_isTargetFarmable(target, number=1):
 	return myCost(target, number)
 
 def m_getNextFarmableTarget(entity):
+	nextFarmableTarget = None
 	if entity == Entities.Grass or entity == Entities.Bush:
 		return None
 	elif entity == Entities.Carrot:
 		if(num_items(Items.Hay) > num_items(Items.Wood)):
-			return Entities.Bush
+			nextFarmableTarget = Entities.Bush
 		else:
-			return Entities.Grass
+			nextFarmableTarget  = Entities.Grass
+	elif entity == Entities.Pumpkin:
+		nextFarmableTarget = Entities.Carrot
+	else:
+		print("not implemented")
+	if(not m_isTargetFarmable(nextFarmableTarget), get_world_size()*get_world_size()):
+		return m_getNextFarmableTarget(nextFarmableTarget)
+	else:
+		return nextFarmableTarget

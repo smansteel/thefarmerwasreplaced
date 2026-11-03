@@ -1,19 +1,13 @@
-from __builtins__ import clear, move, North, East, harvest, Entities, can_harvest, get_world_size
+from __builtins__ import clear, move, North, East, harvest, Entities, Items, get_world_size, Items
 from f0 import m_plant_and_harvest
 from f1 import m_isTargetFarmable, m_getNextFarmableTarget, m_getEntityFromGoal
 from f2 import m_goto
 
-
-
-
 m_goto(0,0)
-m_goto(1,1)
-m_goto(5,5)
 
 
-clear()
+objectives = {Items.Wood :70000, Items.Hay :40000, Items.Carrot :40000, Items.Pumpkin :40000}
 
-objectives = [5000, 7500, 2000]
 
 worldSize = get_world_size() * get_world_size()
 

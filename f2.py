@@ -9,6 +9,17 @@ def m_lootMap(itemOrEntity):
 	if itemOrEntity == Items.Wood:
 		return Entities.Bush
 
+resToPlant = {
+	Items.Wood: Entities.Bush,
+	Items.Carrot: Entities.Carrot,
+	Items.Hay: Entities.Grass,
+	Items.Pumpkin: Entities.Pumpkin,
+	Items.Cactus: Entities.Cactus,
+}
+def m_toPlantForRes(item):
+	return resToPlant[item]
+
+
 def m_goto(pos_x, pos_y):
 	while get_pos_x() != pos_x:
 		if pos_x - get_pos_x() > 0:
@@ -20,6 +31,3 @@ def m_goto(pos_x, pos_y):
 			move(North)
 		else:
 			move(South)
-
-	print("at requestes coords " + str(get_pos_x()) + " " + str(get_pos_y()))
-	do_a_flip()
