@@ -16,7 +16,7 @@ def m_getEntityFromGoal(objectives):
 	for objective_key in objectives:
 		if num_items(objective_key) < objectives[objective_key]:
 			return m_toPlantForRes(objective_key)
-	return Entities.Pumpkin
+	return Items.Gold
 
 
 
@@ -34,6 +34,9 @@ def m_getNextFarmableTarget(entity):
 			nextFarmableTarget  = Entities.Grass
 	elif entity == Entities.Pumpkin:
 		nextFarmableTarget = Entities.Carrot
+	elif entity == Entities.Cactus:
+		nextFarmableTarget = Entities.Pumpkin
+
 	else:
 		print("not implemented")
 	if(not m_isTargetFarmable(nextFarmableTarget), get_world_size()*get_world_size()):
