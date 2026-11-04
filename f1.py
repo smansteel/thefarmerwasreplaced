@@ -36,6 +36,8 @@ def m_getNextFarmableTarget(entity):
 		nextFarmableTarget = Entities.Carrot
 	elif entity == Entities.Cactus:
 		nextFarmableTarget = Entities.Pumpkin
+	elif entity == Entities.Sunflower:
+		nextFarmableTarget = Entities.Carrot
 
 	else:
 		print("not implemented")

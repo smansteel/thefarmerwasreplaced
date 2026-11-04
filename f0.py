@@ -19,6 +19,8 @@ def m_plant_and_harvest(entity):
 		plantAndSolveMaze()
 	elif entity == Entities.Cactus:
 		plantAndHarvestCacti()
+	elif entity == Entities.Sunflower:
+		plantAndHarvestSunflower()
 
 def m_plant(entity):
 	if entity == Entities.Carrot:
@@ -31,9 +33,17 @@ def m_plant(entity):
 		plantPumpkin()
 	elif entity == Entities.Cactus:
 		plantCactus()
+	elif entity == Entities.Sunflower:
+		plantSunflower()
 	else:
 		print("not implemented")
 
+def plantSunflower():
+	if(can_harvest()):
+		harvest()
+	if get_ground_type() != Grounds.Soil:
+		till()
+	plant(Entities.Sunflower)
 def plantCarrot():
 	if get_ground_type() != Grounds.Soil:
 		till()
@@ -43,6 +53,8 @@ def plantPumpkin():
 		till()
 	plant(Entities.Pumpkin)
 def plantCactus():
+	if(can_harvest()):
+		harvest()
 	if get_ground_type() != Grounds.Soil:
 		till()
 	plant(Entities.Cactus)
@@ -87,23 +99,18 @@ def plantAndSolveMaze():
 	##solve
 	harvest()
 
-def plantAndHarvestCacti():
-	#clean
-	for i in range(0, get_world_size()):
-		for j in range(0, get_world_size()):
-			if can_harvest():
-				harvest()
+def plantAndHarvestSunflower():
 	# one map
 	for i in range(0, get_world_size()):
 		for j in range(0, get_world_size()):
-			m_plant(Entities.Cactus)
+			m_plant(Entities.Sunflower)
 			move(East)
 		move(North)
 
-	map={10: [],9: [],8: [],7: [],6: [], 5: [], 4: [], 3: [], 2: [], 1: [], 0: [] }
+	map={15: [], 14: [], 13: [], 12: [], 11: [],10: [],9: [],8: [],7: [] }
 	for i in range(0, get_world_size()):
 		for j in range(0, get_world_size()):
-			map[measure()] = map[measure()].append([get_pos_x(), get_pos_y()])
+			map[measure()].append([get_pos_x(), get_pos_y()])
 			move(East)
 		move(North)
 
@@ -111,3 +118,43 @@ def plantAndHarvestCacti():
 		for points in map[levels]:
 			m_goto(points[0], points[1])
 			harvest()
+	m_goto(0,0)
+
+def plantAndHarvestCacti():
+
+	# one map
+	for i in range(0, get_world_size()):
+		for j in range(0, get_world_size()):
+			m_plant(Entities.Cactus)
+			move(East)
+		move(North)
+	isSorted =False
+	while not isSorted:
+		anyUnsorted = False
+		for i in range(0, get_world_size()):
+			for j in range(0, get_world_size()):
+				for l in [West, South]:
+					currentpoint = measure()
+					if get_pos_x() == 0  and l == West:
+						continue
+					if get_pos_y() == 0 and l == South:
+						continue
+					if(measure(l) > currentpoint):
+						anyUnsorted = True
+						swap(l)
+
+				for l in [East, North]:
+					currentpoint = measure()
+					if get_pos_x() == (get_world_size()-1)  and l == East:
+						continue
+					if get_pos_y() == (get_world_size()-1) and l == North:
+						continue
+					if (measure(l) < currentpoint):
+						anyUnsorted = True
+						swap(l)
+				move(East)
+			move(North)
+		if(not anyUnsorted):
+			isSorted = True
+
+	m_goto(0,0)

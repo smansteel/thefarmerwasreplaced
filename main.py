@@ -6,7 +6,7 @@ from f2 import m_goto
 m_goto(0,0)
 
 
-objectives = {Items.Cactus: 20000, Items.Wood :160000, Items.Hay :80000, Items.Carrot :40000, Items.Pumpkin :40000}
+objectives = {Items.Power: 20000,Items.Cactus: 200000, Items.Wood :160000, Items.Hay :80000, Items.Carrot :70000, Items.Pumpkin :400000}
 
 
 worldSize = get_world_size() * get_world_size()

@@ -15,6 +15,7 @@ resToPlant = {
 	Items.Hay: Entities.Grass,
 	Items.Pumpkin: Entities.Pumpkin,
 	Items.Cactus: Entities.Cactus,
+	Items.Power: Entities.Sunflower
 }
 def m_toPlantForRes(item):
 	return resToPlant[item]
